@@ -40,7 +40,7 @@
 //Rotas
     app.use('/admin', admin)
 //Outros
-const PORT = 8765
+const PORT = 9090
 app.listen(PORT, () => {
-    console.log("Servidor rodando na porta http://localhost:8765 ")
+    console.log("Servidor rodando na porta http://localhost:9090 ")
 })
