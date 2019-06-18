@@ -79,7 +79,7 @@ router.post("/categorias/edit", (req, res) => {
     }
     
     if(erros.length > 0){
-        res.render("admin/addcategorias", {
+        res.render("admin/categorias", {
             erros: erros
         })
     }else{
@@ -171,6 +171,67 @@ router.post("/postagens/nova", (req, res) => {
             req.flash("error_msg", "Houve um erro durante o salvamento da postagem!")
             res.redirect("/admin/postagens")
         })
+    }
+})
+
+router.get("/postagens/edit/:id", (req, res) => {
+    Postagem.findOne({_id: req.params.id}).then(postagem => {
+        Categoria.find().then((categorias) => {
+            res.render("admin/editpostagens", {postagem:postagem, categorias:categorias})
+        }).catch((erro) => {
+            req.flash("error_msg", "Houve um erro ao listar as categorias")
+            res.redirect("/admin/postagens")
+        })
+    }).catch((erro) => {
+        req.flash("error_msg", "Essa postagem não existe!")
+        res.redirect("/admin/postagens")
+    })
+})
+
+router.post("/postagens/edit", (req, res) => {
+    var erros = []
+
+    if(!req.body.titulo || typeof req.body.titulo == undefined || req.body.titulo == null){
+        erros.push({texto: "Título inválido"})
+    }
+
+    if(!req.body.slug || typeof req.body.slug == undefined || req.body.slug == null){
+        erros.push({texto : "Slug inválido"})
+    }
+
+    if(!req.body.descricao || typeof req.body.descricao == undefined || req.body.descricao == null){
+        erros.push({texto: "Descrição inválida"})
+    }
+
+    if(!req.body.conteudo || typeof req.body.conteudo == undefined || req.body.conteudo == null){
+        erros.push({texto : "Conteúdo inválido"})
+    }
+
+    if(req.body.categoria == "0"){
+        erros.push({texto:"Categoria inválida, registre uma categoria"})
+    }
+
+    if(erros.length > 0){
+        res.render("admin/postagens", {erros : erros})
+    }else{
+        Postagem.findOne({_id : req.body.id}).then((postagem) => {
+            postagem.titulo = req.body.titulo
+            postagem.slug = req.body.slug
+            postagem.descricao = req.body.descricao
+            postagem.conteudo = req.body.conteudo
+            postagem.categoria = req.body.categoria
+
+            postagem.save().then(() => {
+                req.flash("success_msg", "Postagem editada com sucesso!")
+                res.redirect("/admin/postagens")
+              }).catch((erro) => {
+                  req.flash("error_msg", "Houve um erro interno ao editar a postagem")
+                  res.redirect("/admin/postagens")
+              })
+            }).catch((erro) => {
+                req.flash("error_msg", "Houve um erro ao editar a postagem")
+                res.redirect("/admin/postagens")
+        }) 
     }
 })
 module.exports = router
