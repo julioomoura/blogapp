@@ -32,7 +32,7 @@
         app.set('view engine', 'handlebars')
     //Mongoose
         mongoose.Promise = global.Promise
-        mongoose.connect("mongodb://localhost/blogapp").then(() => {
+        mongoose.connect("mongodb://localhost/blogapp", {useNewUrlParser: true}).then(() => {
             console.log("Conectado ao mongo")
         }).catch((erro) => {
             console.log("Erro ao se conectar: " + erro)
@@ -60,7 +60,7 @@
             }
         }).catch((erro) => {
             req.flash("error_msg", "Houve um erro interno")
-            res.redirect("/")
+            res.redirect("/ ")
         })
     })
 
