@@ -10,6 +10,7 @@
     const flash = require('connect-flash')
     require("./models/Postagem")
     const Postagem = mongoose.model("postagens")
+    const usuarios = require('./routes/usuarios')
 //Configurações
     //Sessão
         app.use(session({
@@ -69,6 +70,7 @@
     })
 
     app.use('/admin', admin)
+    app.use('/usuarios', usuarios)
 //Outros
 const PORT = 9090
 app.listen(PORT, () => {
