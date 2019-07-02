@@ -11,6 +11,8 @@
     require("./models/Postagem")
     const Postagem = mongoose.model("postagens")
     const usuarios = require('./routes/usuarios')
+    const passport = require('passport')
+    require("./config/auth")(passport)
 //Configurações
     //Sessão
         app.use(session({
@@ -18,6 +20,8 @@
             resave: true,
             saveUninitialized: true
         }))
+        app.use(passport.initialize())
+        app.use(passport.session())
         app.use(flash())
     //Middleware
         app.use((req, res, next) =>{
