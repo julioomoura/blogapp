@@ -13,6 +13,9 @@
         <a class="nav-link" href="#">Categorias</a>
       </li>
       {{#if user}}
+      <li class="nav-item">
+        <a class="nav-link" href="/usuarios/logout" tabindex="-1">Sair</a>
+      </li>
       {{else}}
       <li class="nav-item">
         <a class="nav-link" href="/usuarios/login" tabindex="-1">Login</a>
